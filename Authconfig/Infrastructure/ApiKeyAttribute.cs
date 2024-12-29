@@ -1,17 +1,42 @@
+using Microsoft.AspNetCore.Http;
 using Microsoft.AspNetCore.Mvc;
 using Microsoft.AspNetCore.Mvc.Filters;
-using System;
+using System.Threading.Tasks;
 
-// This attribute will be used to decorate controllers or actions that require an API key
-// To use this attribute, simply add [ApiKey] to the controller or action
-//In program.cs: builder.Services.AddScoped<ApiKeyFilter>();
-[AttributeUsage(AttributeTargets.Class | AttributeTargets.Method)] 
-public class ApiKeyAttribute : Attribute, IFilterFactory
+// This attribute can be used to require an API key for a controller action
+// To use this attribute, add it to the action method in the controller like this:
+// [ApiKey]
+[AttributeUsage(AttributeTargets.Method, AllowMultiple = false)]
+public class ApiKeyAttribute : Attribute, IAsyncActionFilter
 {
-    public bool IsReusable => false;
+    private const string ApiKeyHeaderName = "X-Api-Key";
 
-    public IFilterMetadata CreateInstance(IServiceProvider serviceProvider)
+    public async Task OnActionExecutionAsync(ActionExecutingContext context, ActionExecutionDelegate next)
     {
-        return serviceProvider.GetService(typeof(ApiKeyFilter)) as IFilterMetadata;
+        if (!context.HttpContext.Request.Headers.TryGetValue(ApiKeyHeaderName, out var potentialApiKey))
+        {
+            context.Result = new UnauthorizedResult();
+            return;
+        }
+
+        // Uncomment the following code to check the API key against a database
+        //var dbContext = context.HttpContext.RequestServices.GetService(typeof(MyDbContext)) as MyDbContext;
+        //if (dbContext == null)
+        //{
+        //    context.Result = new StatusCodeResult(StatusCodes.Status503ServiceUnavailable);
+        //    return;
+        //}
+
+        //var apiKey = await dbContext.ApiKeys.Include(k => k.User).FirstOrDefaultAsync(k => k.Key == potentialApiKey);
+        //if (apiKey == null)
+        //{
+        //    context.Result = new UnauthorizedResult();
+        //    return;
+        //}
+
+        // Add user info to HttpContext.Items so it can be accessed in the controller
+        //context.HttpContext.Items["User"] = apiKey.User;
+
+        await next();
     }
 }
