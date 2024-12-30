@@ -22,6 +22,10 @@ namespace API_TEMPLATE.Configuration
     {
         private readonly IConfiguration _configuration;
 
+        /// <summary>
+        /// Initializes a new instance of the <see cref="JwtConfiguration"/> class.
+        /// </summary>
+        /// <param name="configuration">The configuration instance to be used for JWT settings.</param>
         public JwtConfiguration(IConfiguration configuration)
         {
             _configuration = configuration;

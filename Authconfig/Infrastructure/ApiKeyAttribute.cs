@@ -1,11 +1,28 @@
+
 using Microsoft.AspNetCore.Http;
 using Microsoft.AspNetCore.Mvc;
 using Microsoft.AspNetCore.Mvc.Filters;
 using System.Threading.Tasks;
 
-// This attribute can be used to require an API key for a controller action
-// To use this attribute, add it to the action method in the controller like this:
-// [ApiKey]
+/// <summary>
+/// This attribute can be used to require an API key for a controller action.
+/// To use this attribute, add it to the action method in the controller like this:
+/// <code>[ApiKey]</code>
+/// </summary>
+/// <remarks>
+/// The attribute checks for the presence of an API key in the request headers.
+/// If the API key is not present or invalid, the request is unauthorized.
+/// </remarks>
+/// <example>
+/// <code>
+/// [ApiKey]
+/// public async Task<IActionResult> MySecureAction()
+/// {
+///     // Action code here
+/// }
+/// </code>
+/// </example>
+/// <seealso cref="Microsoft.AspNetCore.Mvc.Filters.IAsyncActionFilter"/>
 [AttributeUsage(AttributeTargets.Method, AllowMultiple = false)]
 public class ApiKeyAttribute : Attribute, IAsyncActionFilter
 {

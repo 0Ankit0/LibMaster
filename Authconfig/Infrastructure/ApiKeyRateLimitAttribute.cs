@@ -5,9 +5,28 @@ using Microsoft.Extensions.DependencyInjection;
 using System;
 using System.Threading.Tasks;
 
-// This attribute  is used to limit the number of requests that can be made by a single API key in a given time window
-// To use this attribute, add it to the action method in the controller like this:
-// [ApiKeyRateLimit(limit=20,time=100)]
+/// <summary>
+/// This attribute is used to limit the number of requests that can be made by a single API key in a given time window.
+/// </summary>
+/// <remarks>
+/// To use this attribute, add it to the action method in the controller like this:
+/// <code>
+/// [ApiKeyRateLimit(limit=20, time=100)]
+/// </code>
+/// </remarks>
+/// <example>
+/// <code>
+/// [ApiKeyRateLimit(limit=20, time=100)]
+/// public async Task<IActionResult> MyAction()
+/// {
+///     // Action implementation
+/// }
+/// </code>
+/// </example>
+/// <param name="limit">The maximum number of requests allowed within the specified time window.</param>
+/// <param name="time">The time window in seconds during which the request count is measured.</param>
+/// <exception cref="UnauthorizedResult">Thrown when the API key is missing from the request headers.</exception>
+/// <exception cref="ContentResult">Thrown when the API key rate limit is exceeded.</exception>
 [AttributeUsage(AttributeTargets.Method, AllowMultiple = false)]
 public class ApiKeyRateLimitAttribute : Attribute, IAsyncActionFilter
 {
