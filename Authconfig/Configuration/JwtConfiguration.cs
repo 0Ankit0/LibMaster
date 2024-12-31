@@ -13,11 +13,20 @@ using System.Threading.Tasks;
 
 namespace API_TEMPLATE.Configuration
 {
-    //To use this configuration, add the following to the project's Startup file:
-    // Instantiate the JWT configuration class
-    //var jwtConfig = new JwtConfiguration(builder.Configuration);
-    // Configure services using the instance
-    //jwtConfig.ConfigureServices(builder.Services);
+    /// <summary>
+    /// Configures JWT (JSON Web Token) authentication.
+    /// </summary>
+    /// <remarks>
+    /// To use this configuration, add the following to the project's Startup file:
+    /// </remarks>
+    /// <example>
+    /// <code>
+    /// // Instantiate the JWT configuration class
+    /// var jwtConfig = new JwtConfiguration(builder.Configuration);
+    ///  // Configure services using the instance
+    ///  jwtConfig.ConfigureServices(builder.Services); 
+    /// </code>
+    /// </example> 
     public class JwtConfiguration
     {
         private readonly IConfiguration _configuration;
